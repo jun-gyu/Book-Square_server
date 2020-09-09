@@ -1,8 +1,7 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-const passport = require("passport");
 
 const bcrypt = require("bcryptjs");
 
@@ -22,7 +21,7 @@ router.post("/signUp", (req, res) => {
         email: req.body.email,
         password: req.body.password,
       });
-
+      console.log("in 25Line");
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
@@ -31,12 +30,12 @@ router.post("/signUp", (req, res) => {
 
           newUser
             .save()
-            .then((user) => res.json(user))
+            .then((user) => res.status(200).json(user))
             .catch((err) => console.log(err));
         });
       });
-      return res.status(200).send();
     }
+    return;
   });
 });
 
@@ -67,7 +66,8 @@ router.post("/signIn", (req, res) => {
           keys.secretOrKey,
           { expiresIn: 3600 },
           (err, token) => {
-            res.json({
+            const bearerToken = "Bearer " + token;
+            res.header("auth-token", bearerToken).json({
               name: user.name,
               email: user.email,
               token: "Bearer " + token,
@@ -78,14 +78,6 @@ router.post("/signIn", (req, res) => {
         return res.status(401).send(); // 잘못된 인증정보
       }
     });
-  });
-});
-
-router.get('/loggedInUserInfo', passport.authenticate('jwt', { session: false}), (req, res) => {
-  res.json({
-      id: req.user.id,
-      name: req.user.name,
-      email: req.user.email,
   });
 });
 
