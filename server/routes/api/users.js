@@ -18,7 +18,7 @@ router.post("/signUp", (req, res) => {
         email: req.body.email,
         password: req.body.password,
       });
-      console.log("in 25Line");
+
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
