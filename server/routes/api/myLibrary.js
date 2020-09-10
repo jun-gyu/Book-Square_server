@@ -25,7 +25,7 @@ router.post("/addBooks", checkAuthToken, async (req, res) => {
 
   try {
     const userId = await Users.findOne({ _id: user_id });
-    await MyLibrary.create({
+    const myLibrary = await new MyLibrary({
       bookUuid: bookUuid,
       bookTitle: bookTitle,
       bookAuthor: bookAuthor[0],
@@ -33,10 +33,15 @@ router.post("/addBooks", checkAuthToken, async (req, res) => {
       bookRate: bookRate,
       user: userId,
     });
+    await myLibrary.save((err) => {
+      if (err) {
+        return res.status(400).send({ message: "didn't save your books" });
+      }
+      res.status(200).send({ message: "success added your books on DB" });
+    });
 
     // const   await
     //send 수정해야됩니다 지금은 db에 저장이 되는지 보고있슴다
-    res.status(200).send({ message: "add Books success" });
   } catch (err) {
     res.status(403).send(err);
   }
