@@ -29,19 +29,22 @@ router.post("/getAllReport", checkAuthToken, async (req, res) => {
 
 //* bookUuid 를 추가하여 report 생성.
 router.post("/addReport", checkAuthToken, async (req, res) => {
-  //* 책이 중복될경우 오류를 보내주어야함. 추가해야한다.
   const { bookUuid, reportUuid, reportMemo } = req.body;
-  /* 
-  reportUuid: 
-  reportMemo: 
-  bookUuid:   
-  이 형태로 요청 보내면 됩니다! 
-  date를 현시각으로 바꾸는건 못했습니다... 
-  
-*/
 
   //* bookUuid 는 Report 가 ref하고있는 책을 _id 대신 찾기 위해 설정해놓음
-  const myLibraryId = await MyLibrary.findOne({ bookUuid: bookUuid });
+  const myLibraryId = await MyLibrary.findOne(
+    { bookUuid: bookUuid },
+    {
+      bookUuid: 0,
+      bookTitle: 0,
+      bookAuthor: 0,
+      bookImage: 0,
+      bookRate: 0,
+      user: 0,
+      __v: 0,
+    }
+  );
+
   const report = await new Report({
     reportUuid: reportUuid,
     reportMemo: reportMemo,
@@ -50,22 +53,22 @@ router.post("/addReport", checkAuthToken, async (req, res) => {
   });
   await report.save((err) => {
     if (err) return res.status(404).send(err);
-    res.status(200).send("add Report success");
+    res.status(200).send({ message: "add Report success" });
   });
 });
 
 //* uuid는 중복율이 굉장히 낮아 uuid로만 report를 찾아 삭제하는 요청.
-router.post("/deleteReport", checkAuthToken, async (req, res) => {
+router.delete("/deleteReport", checkAuthToken, async (req, res) => {
   const { reportUuid } = req.body;
   /*report 에 부여한 reportUuid 를 요청에 담아 보내주시가만 하면됩니다!*/
   await Report.remove({ reportUuid: reportUuid }, (err, docs) => {
     if (err) return res.status(404).send(err);
-    res.status(200).send(`delete report success`);
+    res.status(200).send({ message: "delete report success" });
   });
 });
 
 //* updateReport
-router.post("/updateReport", checkAuthToken, async (req, res) => {
+router.put("/updateReport", checkAuthToken, async (req, res) => {
   const { reportUuid, reportMemo } = req.body;
   /*
  {

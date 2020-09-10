@@ -10,6 +10,7 @@ const PORT = require("./config/keys").PORT;
 const app = express();
 const users = require("./routes/api/users");
 const myLibrary = require("./routes/api/myLibrary");
+const report = require("./routes/api/report");
 // 미들웨어 설정 파트
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -40,7 +41,7 @@ app.use(morgan("dev"));
 // 라우팅 파트
 app.use("/users", users);
 app.use("/myLibrary", myLibrary);
-
+app.use("/report", report);
 // 서버 실행
 app.listen(PORT, (req, res) => {
   console.log(`서버 실행중..in port ${PORT}`);
