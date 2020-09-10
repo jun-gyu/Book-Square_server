@@ -9,7 +9,7 @@ const PORT = require("./config/keys").PORT;
 // 초기화 파트
 const app = express();
 const users = require("./routes/api/users");
-
+const myLibrary = require("./routes/api/myLibrary");
 // 미들웨어 설정 파트
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -39,6 +39,7 @@ require("./config/passport")(passport);
 app.use(morgan("dev"));
 // 라우팅 파트
 app.use("/users", users);
+app.use("/myLibrary", myLibrary);
 
 // 서버 실행
 app.listen(PORT, (req, res) => {

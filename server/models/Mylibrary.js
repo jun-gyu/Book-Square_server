@@ -8,7 +8,7 @@ const myLibrarySchema = mongoose.Schema({
   bookTitle: {
     type: String,
     required: true,
-    max: 255, // required:true 는 이값이null이 아니여야한다는 뜻
+    max: 255,
   },
   bookAuthor: {
     type: String,
