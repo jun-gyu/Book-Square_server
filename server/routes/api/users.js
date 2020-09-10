@@ -1,12 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const keys = require("../../config/keys");
-
 const bcrypt = require("bcryptjs");
-
 const User = require("../../models/User");
-
+const { makeToken } = require("../../middleware/auth");
 router.get("/", (req, res) => {
   res.send("패스포트 모듈 테스트");
 });
@@ -55,25 +52,18 @@ router.post("/signIn", (req, res) => {
         // 회원 비밀번호가 일치할 때
         // JWT PAYLOAD 생성
         const payload = {
-          id: user.id,
+          user_id: user.id,
           name: user.name,
         };
 
         // JWT 토큰 생성
-        // 1시간 동안 유효
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            const bearerToken = "Bearer " + token;
-            res.header("auth-token", bearerToken).json({
-              name: user.name,
-              email: user.email,
-              token: "Bearer " + token,
-            });
-          }
-        );
+
+        const bearerToken = makeToken(payload);
+        res.header("auth-token", bearerToken).json({
+          name: user.name,
+          email: user.email,
+          token: bearerToken,
+        });
       } else {
         return res.status(401).send(); // 잘못된 인증정보
       }
