@@ -81,7 +81,7 @@ router.put("/updateReport", checkAuthToken, async (req, res) => {
     { reportMemo: reportMemo },
     (err, docs) => {
       if (err) return res.status(404).send(err);
-      res.status(200).send("success updateReport");
+      res.status(200).send({ message: "success updateReport" });
     }
   );
 });
@@ -89,7 +89,7 @@ router.put("/updateReport", checkAuthToken, async (req, res) => {
 //* 독후감이 있는 책만 불러오는 작업.
 router.get("/theBooksWithReport", checkAuthToken, async (req, res) => {
   const { user_id } = req.user;
-  console.log(user_id);
+
   /*
    * user_id 로 유저에 맞는 책 조회 후 각 책들의 uuid를 추출, report의 bookUuid와 맞는 책들만 보내줌.
    */
@@ -216,6 +216,9 @@ router.get("/howManyWriteReport", checkAuthToken, async (req, res) => {
   // book 은 해당 유저의 책들
   // 레포트 북 아이디와 유저 책아이가 같은것만 추린다. mybookResult 에 저장
   let mybookResult = [];
+
+  // reports 안에 myLibrary 의 값이 null 일경우 레포트는 있지만 책은 없는경우임.
+  // 책은 지워졌지만 레포트는 남은 상태.
   reports.forEach((report) => {
     books.forEach((book) => {
       if (report.myLibrary.bookUuid === book.bookUuid) {
@@ -244,6 +247,6 @@ router.get("/howManyWriteReport", checkAuthToken, async (req, res) => {
   // sort된 값의 유무에 따라 신호 달라짐.
   manyOrderSorted.length !== 0
     ? res.status(200).json(manyOrderSorted)
-    : res.status(404).send("couldn't work that what you wanted");
+    : res.status(404).send({ message: "couldn't work that what you wanted" });
 });
 module.exports = router;
