@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const myLibrarySchema = mongoose.Schema({
+const myLibrarySchema = new Schema({
   bookUuid: {
     type: String,
     required: true,

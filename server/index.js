@@ -29,7 +29,11 @@ app.use(passport.initialize());
 const db = require("./config/keys").mongoURI;
 
 mongoose
-  .connect(db, { useNewUrlParser: true }, { useUnifiedTopology: true }) //useUnifiedTopology 이건 뭐지
+  .connect(db, {
+    dbName: "BookSquare",
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }) //useUnifiedTopology 이건 뭐지
   .then(() => console.log("몽고 DB가 연결되었습니다."))
   .catch((err) => console.log(err));
 

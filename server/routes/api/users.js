@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
 const { makeToken } = require("../../middleware/auth");
@@ -43,7 +42,7 @@ router.post("/signIn", (req, res) => {
   // email로 회원 찾기
   User.findOne({ email }).then((user) => {
     if (!user) {
-      return res.status(401).send(); // Unauthorized
+      return res.status(401).send({ message: "user is not exist" }); // Unauthorized
     }
 
     // 패스워드 확인
@@ -57,7 +56,6 @@ router.post("/signIn", (req, res) => {
         };
 
         // JWT 토큰 생성
-
         const bearerToken = makeToken(payload);
         res.header("auth-token", bearerToken).json({
           name: user.name,
@@ -65,7 +63,9 @@ router.post("/signIn", (req, res) => {
           token: bearerToken,
         });
       } else {
-        return res.status(401).send(); // 잘못된 인증정보
+        return res
+          .status(401)
+          .send({ message: "please check your email or password" }); // 잘못된 인증정보
       }
     });
   });
