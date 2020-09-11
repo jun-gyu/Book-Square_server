@@ -6,6 +6,7 @@ const passport = require("passport");
 const cors = require("cors");
 const morgan = require("morgan");
 const PORT = require("./config/keys").PORT;
+const connect = require("./config/db");
 // 초기화 파트
 const app = express();
 const users = require("./routes/api/users");
@@ -18,24 +19,15 @@ app.use(bodyParser.json());
 app.use(
   cors({
     origin: [`http://localhost:${PORT}`, "http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 
 app.use(passport.initialize());
 
-// 몽고DB 설정 파트
-const db = require("./config/keys").mongoURI;
-
-mongoose
-  .connect(db, {
-    dbName: "BookSquare",
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }) //useUnifiedTopology 이건 뭐지
-  .then(() => console.log("몽고 DB가 연결되었습니다."))
-  .catch((err) => console.log(err));
+//몽고디비 실행
+connect();
 
 // 패스포트 모듈 설정
 require("./config/passport")(passport);
