@@ -8,6 +8,7 @@ const connect = () => {
       dbName: "BookSquare",
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     },
     (error) => {
       if (error) {

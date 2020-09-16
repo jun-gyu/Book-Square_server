@@ -57,7 +57,7 @@ router.post("/signIn", (req, res) => {
 
         // JWT 토큰 생성
         const bearerToken = makeToken(payload);
-        res.header("auth-token", bearerToken).json({
+        res.json({
           name: user.name,
           email: user.email,
           token: bearerToken,
