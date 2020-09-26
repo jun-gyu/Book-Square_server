@@ -8,7 +8,9 @@ const { checkAuthToken } = require("../../middleware/auth");
 router.post("/getAllReport", checkAuthToken, async (req, res) => {
   const { bookUuid } = req.body;
   await Report.find({ bookUuid: bookUuid }, (err, docs) => {
-    if (err) return res.status(404).send(err);
+    if (docs.length === 0) {
+      return res.status(404).send(null);
+    }
     res.status(200).send(docs);
     /*docs 는
  [
@@ -44,25 +46,35 @@ router.post("/addReport", checkAuthToken, async (req, res) => {
       __v: 0,
     }
   );
-
-  const report = await new Report({
-    reportUuid: reportUuid,
-    reportMemo: reportMemo,
-    bookUuid: bookUuid,
-    myLibrary: myLibraryId,
-  });
-  await report.save((err) => {
-    if (err) return res.status(404).send(err);
-    res.status(200).send({ message: "add Report success" });
-  });
+  if (myLibraryId === null) {
+    return res
+      .status(404)
+      .json({ code: 404, message: "your book is not found" });
+  } else {
+    const report = await new Report({
+      reportUuid: reportUuid,
+      reportMemo: reportMemo,
+      bookUuid: bookUuid,
+      myLibrary: myLibraryId,
+    });
+    await report.save((err) => {
+      if (err) return res.status(404).send(err);
+      res.status(200).send({ message: "add Report success" });
+    });
+  }
 });
 
 //* uuid는 중복율이 굉장히 낮아 uuid로만 report를 찾아 삭제하는 요청.
-router.delete("/deleteReport", checkAuthToken, async (req, res) => {
+router.post("/deleteReport", checkAuthToken, async (req, res) => {
   const { reportUuid } = req.body;
   /*report 에 부여한 reportUuid 를 요청에 담아 보내주시가만 하면됩니다!*/
-  await Report.remove({ reportUuid: reportUuid }, (err, docs) => {
-    if (err) return res.status(404).send(err);
+  await Report.deleteOne({ reportUuid: reportUuid }, (_, docs) => {
+    if (!docs.deletedCount) {
+      return res
+        .status(404)
+        .send({ code: 404, message: "report is not found" });
+    }
+
     res.status(200).send({ message: "delete report success" });
   });
 });
@@ -70,7 +82,7 @@ router.delete("/deleteReport", checkAuthToken, async (req, res) => {
 //* updateReport
 router.put("/updateReport", checkAuthToken, async (req, res) => {
   const { reportUuid, reportMemo } = req.body;
-  /*
+  /*  
  {
    "reportUuid":"12312",
    "reportMemo":"12312516"
@@ -79,9 +91,14 @@ router.put("/updateReport", checkAuthToken, async (req, res) => {
   await Report.findOneAndUpdate(
     { reportUuid: reportUuid },
     { reportMemo: reportMemo },
-    (err, docs) => {
-      if (err) return res.status(404).send(err);
-      res.status(200).send({ message: "success updateReport" });
+    (_, docs) => {
+      if (docs === null) {
+        return res
+          .status(404)
+          .send({ code: 404, message: "report is not found" });
+      }
+
+      res.status(200).send({ code: 200, message: "success updateReport" });
     }
   );
 });

@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
-const { makeToken } = require("../../middleware/auth");
+const { makeToken, checkAuthToken } = require("../../middleware/auth");
+
 router.get("/", (req, res) => {
   res.send("패스포트 모듈 테스트");
 });
@@ -57,7 +58,7 @@ router.post("/signIn", (req, res) => {
 
         // JWT 토큰 생성
         const bearerToken = makeToken(payload);
-        res.header("auth-token", bearerToken).json({
+        res.json({
           name: user.name,
           email: user.email,
           token: bearerToken,
@@ -69,6 +70,22 @@ router.post("/signIn", (req, res) => {
       }
     });
   });
+});
+
+router.put("/modifyName", checkAuthToken, async (req, res) => {
+  const { user_id } = req.user;
+  const modifyName = req.body.name;
+  await User.findOneAndUpdate(
+    { _id: user_id },
+    { name: modifyName },
+    (err, docs) => {
+      if (docs === null) {
+        res.status(404).json({ code: 404, message: `can not found user` });
+      } else {
+        res.status(200).json({ code: 200, message: `modify userName success` });
+      }
+    }
+  );
 });
 
 module.exports = router;

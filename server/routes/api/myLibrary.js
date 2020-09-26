@@ -36,26 +36,43 @@ router.post("/addBooks", checkAuthToken, async (req, res) => {
     });
     await myLibrary.save((err) => {
       if (err) {
-        return res.status(400).send({ message: "didn't save your books" });
+        return res.status(400).json({
+          code: 400,
+          message: "didn't save your books",
+        });
       }
-      res.status(200).send({ message: "success added your books on DB" });
+      res
+        .status(200)
+        .send({ code: 200, message: "success added your books on DB" });
     });
   } else {
-    return res.status(404).send({ message: "이미 있는 책 정보 입니다." });
+    return res
+      .status(404)
+      .send({ code: 404, message: "이미 있는 책 정보 입니다." });
   }
 });
 
 // myLibrary book delete
-router.delete("/deleteBooks", checkAuthToken, async (req, res) => {
+router.post("/deleteBooks", checkAuthToken, async (req, res) => {
   const { bookUuid } = req.body;
   //bookUuid 에 맞는 ref 북 리스트를 삭제한다.
-  await MyLibrary.findOneAndRemove({ bookUuid: bookUuid }, (err) => {
-    if (err) return res.status(404).send(err);
-  });
-  await Report.findOneAndRemove({ bookUuid: bookUuid }, (err) => {
-    if (err) return res.status(404).send(err);
-    res.status(200).send({ message: "success deleted the book and report" });
-  });
+  try {
+    const book = await MyLibrary.deleteOne({ bookUuid: bookUuid });
+    const report = await Report.deleteMany({ bookUuid: bookUuid });
+    //book.deletedCount 는 실 데이터가 삭제 되었을시 1 (true)을(를) 반환함.
+    if (!book.deletedCount && !report.deletedCount) {
+      throw `can't found your book & report`;
+    } else {
+      res
+        .status(200)
+        .json({ code: 200, message: "success delete report & book" });
+    }
+  } catch (err) {
+    res.status(404).json({
+      code: 404,
+      message: err,
+    });
+  }
 });
 
 module.exports = router;
