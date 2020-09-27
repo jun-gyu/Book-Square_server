@@ -10,7 +10,7 @@ router.post("/", (req, res) => {
     .get(
       `https://openapi.naver.com/v1/search/book_adv.xml?d_publ=${encodeURI(
         "교보문고"
-      )}&d_catg=${select}&display=10`,
+      )}&d_catg=${select}&display=4`,
       {
         headers: {
           "X-Naver-Client-Id": ClientId,
