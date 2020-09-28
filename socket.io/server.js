@@ -21,7 +21,7 @@ const botName = `BOT`;
 
 io.on("connection", (socket) => {
   socket.on(`joinRoom`, ({ username, bookname }) => {
-    const { username, bookname } = userJoin(socket.id, username, bookname);
+    const user = userJoin(socket.id, username, bookname);
 
     //* 채팅 방 (소켓 연결 시)입장시 터미널에 아래 텍스트가 뜸
     console.log("소켓이 연결되었어요!!!  ");
@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
       `message`,
       formatMessage(
         botName,
-        `${username} 님께서 입장 해버리셔따..!입장 샷~ 입장 샷~`
+        `${user.username} 님께서 입장 해버리셔따..!입장 샷~ 입장 샷~`
       )
     );
 
