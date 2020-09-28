@@ -1,11 +1,11 @@
 "use strict";
 const moment = require("moment");
 
-const formatMessage = (username, bookname, text) => {
+const formatMessage = (name, bookTitle, message) => {
   return {
-    username,
-    bookname,
-    text,
+    name,
+    bookTitle,
+    message,
     time: moment().format(`h:mm a`),
   };
 };

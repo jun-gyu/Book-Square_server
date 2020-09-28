@@ -4,6 +4,7 @@ const users = [];
 /**
 users = [
     {
+      
         id,
         username,
         bookname.
@@ -13,8 +14,8 @@ users = [
 ] */
 //*Join user to chat
 
-const userJoin = (id, username, bookname) => {
-  const user = { id, username, bookname };
+const userJoin = (id, name, bookTitle) => {
+  const user = { id, name, bookTitle };
 
   users.push(user);
 
