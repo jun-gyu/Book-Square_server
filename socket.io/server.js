@@ -30,12 +30,12 @@ io.on("connection", (socket) => {
 //     const user = userJoin(socket.id, name, bookTitle);
 
 //     //* 채팅 방 (소켓 연결 시)입장시 터미널에 아래 텍스트가 뜸
-//     console.log("소켓이 연결되었어요!!!  ");
+//     console.log("소켓이 연결되었어요!");
 
 //     //* 연결이 시작 된 첫 시점에만 해당 유저에게 뜸
 //     socket.emit(
 //       `message`,
-//       formatMessage(botName, `어서오세요~~~~!!여기 이모 여기 한분 세팅~`)
+//       formatMessage(botName,_,user.name)
 //     );
 
 //     //* 연결을 막 시작한 유저를 제외한 모든 유저에게 아래 메시지 뜸
@@ -43,7 +43,8 @@ io.on("connection", (socket) => {
 //       `message`,
 //       formatMessage(
 //         botName,
-//         `${user.username} 님께서 입장 해버리셔따..!입장 샷~ 입장 샷~`
+//           _,
+//         ,`${user.username} 님께서 입장 하셨습니다.`
 //       )
 //     );
 
@@ -63,8 +64,8 @@ io.on("connection", (socket) => {
 //       io.emit(
 //         `message`,
 //         formatMessage(
-//           botName,
-//           `${username} 님께서 후다닥 달아나셨어요..잘가여..이건 다 이효진 잘못입니다.`
+//           botName,_,
+//           `${username} 님께서 퇴장하셨습니다.`
 //         )
 //       );
 //       //* Leave user
