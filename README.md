@@ -55,13 +55,9 @@
 - [Project](#project)
 
   - [<span style="color:#c9a7ea">sprint 1</span>](#sprint-1)
-    - [schema 작성 (mongoose)](#schema-작성-mongoose)
-    - [api 작성](#api-작성)
-    - [jwt auth 구현.](#jwt-auth-구현)
-    - [router 분기 처리.](#router-분기-처리)
+    
   - [<span style="color:#c9a7ea">sprint 2</span>](#sprint-2)
-    - [외부 api 사용](#외부-api-사용)
-    - [유저이름 수정 api 추가.](#유저이름-수정-api-추가)
+  
   - [<span style="color:#c9a7ea">sprint 3</span>](#sprint-3)
     
   - [개발 목적](#개발-목적)
