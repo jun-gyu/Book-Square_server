@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
-const { makeToken, checkAuthToken } = require("../../middleware/auth");
+const { makeToken, checkAuthToken } = require("../middleware/auth");
 
 router.post("/signUp", async (req, res) => {
   try {

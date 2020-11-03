@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Report = require("../../models/Report");
 const MyLibrary = require("../../models/MyLibrary");
-const { checkAuthToken } = require("../../middleware/auth");
+const { checkAuthToken } = require("../middleware/auth");
 const theBooksWithReport = require("../../service/theBooksWithReport");
 const howManyWriteReport = require("../../service/howManyWriteReport");
 //* bookUuid 에 맞는 모든 report 요청 , post인 이유는 bookUuid를 받기위함.

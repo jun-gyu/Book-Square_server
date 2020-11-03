@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Report = require("../../models/Report");
 const MyLibrary = require("../../models/MyLibrary");
-const Users = require("../../models/User");
-const { checkAuthToken } = require("../../middleware/auth");
+const User = require("../../models/User");
+const { checkAuthToken } = require("../middleware/auth");
 /*
  * myLibrary/getAllBooks
  */
@@ -29,7 +29,7 @@ router.post("/addBooks", checkAuthToken, async (req, res) => {
   try {
     const isExist = await MyLibrary.findOne({ bookTitle: bookTitle });
     if (!isExist) {
-      const userId = await Users.findOne({ _id: user_id });
+      const userId = await User.findOne({ _id: user_id });
       const myLibrary = await new MyLibrary({
         bookUuid: bookUuid,
         bookTitle: bookTitle,

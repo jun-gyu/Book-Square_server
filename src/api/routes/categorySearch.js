@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const xml2js = require("xml2js");
-const { ClientId, ClientSecret } = require("../../config/keys");
+const { clientId, clientSecret } = require("../../config/index");
 router.post("/", (req, res) => {
   const { select } = req.body;
 
@@ -13,8 +13,8 @@ router.post("/", (req, res) => {
       )}&d_catg=${select}&display=4`,
       {
         headers: {
-          "X-Naver-Client-Id": ClientId,
-          "X-Naver-Client-Secret": ClientSecret,
+          "X-Naver-Client-Id": clientId,
+          "X-Naver-Client-Secret": clientSecret,
         },
       }
     )

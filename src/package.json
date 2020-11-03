@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./index.js"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "axios": "^0.20.0",
     "bcrypt": "5.0.0",
     "bcryptjs": "2.4.3",
@@ -27,6 +28,8 @@
     "passport": "0.4.1",
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
