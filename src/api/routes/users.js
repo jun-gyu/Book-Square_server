@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("../../models/User");
-const { makeToken, checkAuthToken } = require("../../middleware/auth");
+const { makeToken, checkAuthToken } = require("../middleware/auth");
 
+router.get('/',(req,res)=>{
+  res.send("hello jun you are the best")
+})
 router.post("/signUp", async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });

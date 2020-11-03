@@ -1,4 +1,4 @@
-const keys = require("../config/keys");
+const SECRET_KEY = require("../../config/index").SECRET_KEY;
 const jwt = require("jsonwebtoken");
 
 function checkAuthToken(req, res, next) {
@@ -7,7 +7,7 @@ function checkAuthToken(req, res, next) {
   const token = authHeader && authHeader.split(` `)[1];
 
   if (token === null) return res.status(401).send({ message: "token is null" }); //unauthenticated 비인증.
-  jwt.verify(token, keys.secretOrKey, (err, user) => {
+  jwt.verify(token, SECRET_KEY, (err, user) => {
     if (err) return res.status(403).send(err);
     /**클라이언트는 콘텐츠에 접근할 권리를 가지고 있지 않습니다.
      *예를들어 그들은 미승인이어서 서버는 거절을 위한 적절한 응답을 보냅니다.

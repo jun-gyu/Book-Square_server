@@ -1,4 +1,4 @@
-const MONGO_URI = require("./keys").mongoURI;
+const MONGO_URI = require("../config/index").mongodb.URL;
 const mongoose = require("mongoose");
 
 const connect = () => {
