@@ -26,7 +26,7 @@ const myLibrarySchema = new Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "users",
+    ref: "user",
   },
 });
 

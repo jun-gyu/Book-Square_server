@@ -1,11 +1,9 @@
-const MONGO_URI = require("../config/index").mongodb.URL;
 const mongoose = require("mongoose");
-
+const MONGO_URI = require("../config/index").mongodb;
 const connect = () => {
   mongoose.connect(
     MONGO_URI,
     {
-      dbName: "BookSquare",
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
